@@ -38,8 +38,11 @@ def new_topic(request):
         form = TopicForm(data=request.POST)
 
         if form.is_valid():
-            form.save()
-
+            new_topic = form.save(commit=False)
+            new_topic.owner = request.user
+            new_topic.save()
+            #form.save()
+            
             return redirect('MainApp:topics')
 
     #dictionary help to pass the data, the data here is the form
@@ -69,6 +72,9 @@ def edit_entry(request,entry_id):
     """Edit an existing entry"""
     entry = Entry.objects.get(id=entry_id)
     topic = entry.topic
+
+    if topic.owner != request.user:
+        raise Http404
 
     if request.method != 'POST':
         # This argument tells Django to create the form prefilled

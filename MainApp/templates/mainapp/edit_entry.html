@@ -7,7 +7,7 @@
 
 <p>Edit entry :</p>
 
-<form action="{% url 'MainApp:edit_entry' edit.id %}" method="post">
+<form action="{% url 'MainApp:edit_entry' entry.id %}" method="post">
     {% csrf_token %}
 
     {{ form.as_p }}
